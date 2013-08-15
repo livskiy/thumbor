@@ -129,6 +129,12 @@ class Engine(BaseEngine):
             if image_format == 'WEBP' and self.image.mode in ['L', 'LA', 'P', 'RGBA']:
                 self.image = self.image.convert('RGB')
 
+            if image_format == 'JPEG' and self.image.mode in ['LA', 'RGBA']:
+                new_img = Image.new('RGB', self.image.size, (255, 255, 255))
+                # Set mask. 3 is the alpha channel.
+                new_img.paste(self.image, mask=self.image.split()[3])
+                self.image = new_img
+
             self.image.save(img_buffer, image_format, **options)
         except IOError:
             logger.exception('Could not save as improved image, consider to increase ImageFile.MAXBLOCK')
