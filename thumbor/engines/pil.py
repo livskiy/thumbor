@@ -132,7 +132,7 @@ class Engine(BaseEngine):
             if image_format == 'JPEG' and self.image.mode in ['LA', 'RGBA']:
                 new_img = Image.new('RGB', self.image.size, (255, 255, 255))
                 try:
-                    mask=self.image.split()[3]  # 3 is the alpha channel.
+                    mask=self.image.split()[1]
                 except IndexError:
                     mask = None
                 new_img.paste(self.image, mask=mask)
