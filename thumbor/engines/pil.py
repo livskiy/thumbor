@@ -131,11 +131,12 @@ class Engine(BaseEngine):
 
             if image_format == 'JPEG' and self.image.mode in ['LA', 'RGBA']:
                 new_img = Image.new('RGB', self.image.size, (255, 255, 255))
+
                 try:
-                    mask=self.image.split()[1]
-                except IndexError:
-                    mask = None
-                new_img.paste(self.image, mask=mask)
+                    new_img.paste(self.image, mask=self.image.split()[-1])
+                except Exception:
+                    new_img.paste(self.image.convert('RGB'))
+
                 self.image = new_img
 
             self.image.save(img_buffer, image_format, **options)
